@@ -1,20 +1,37 @@
 import { View, Text, StyleSheet } from "react-native";
-import React, { FC } from "react";
-import ColorList from "../../components/ColorList";
+import React, { FC, useState } from "react";
 import ScreenWrapper from "@/components/ScreenWrapper";
-import Home from "@/assets/icons/Home";
 import { theme } from "@/constants";
 import Icon from "@/assets/icons/index";
 import { StatusBar } from "expo-status-bar";
-import BackButton from "@/components/BackButton";
 import { hp, wp } from "@/helpers/common";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
+import { useMutation } from "@tanstack/react-query";
+import { authAPI } from "@/api";
+import { LogInDto } from "@/types/api/dto/auth";
 
 type LoginProps = {};
 
 const Login: FC<LoginProps> = ({}) => {
-  const handleLogin = () => {};
+  const [loginInfo, setLoginInfo] = useState<LogInDto>({
+    password: "",
+    phone: "",
+  });
+
+  const login = useMutation({
+    mutationFn: () => authAPI.login(loginInfo),
+    onSuccess: (res) => {},
+    onError: (err) => {},
+  });
+
+  const handleLogin = () => {
+    if (!loginInfo.password || !loginInfo.phone) {
+      return;
+    }
+    login.mutate();
+  };
+
   return (
     <ScreenWrapper>
       <StatusBar style="dark"></StatusBar>
@@ -37,7 +54,7 @@ const Login: FC<LoginProps> = ({}) => {
             icon={<Icon name="call" size={26} strokeWidth={1.6} />}
             placeHolder="Nhập số điện thoại"
             onChangeText={(text) => {
-              console.log(text);
+              setLoginInfo((prev) => ({ ...prev, phone: text }));
             }}
           />
           <Input
@@ -45,7 +62,7 @@ const Login: FC<LoginProps> = ({}) => {
             placeHolder="Nhập mật khẩu"
             secureTextEntry
             onChangeText={(text) => {
-              console.log(text);
+              setLoginInfo((prev) => ({ ...prev, password: text }));
             }}
           />
           <Text style={styles.forgotPassword}>Quên mật khẩu?</Text>

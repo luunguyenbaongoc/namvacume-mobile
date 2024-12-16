@@ -10,6 +10,7 @@ const _layout = () => {
         name="index"
         options={{
           title: "Home",
+          headerShown: false,
         }}
       />
       <Tabs.Screen
@@ -28,6 +29,7 @@ const _layout = () => {
         name="profile"
         options={{
           title: "Profile",
+          headerShown: false
         }}
       />
     </Tabs>

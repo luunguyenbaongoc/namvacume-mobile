@@ -1,15 +1,30 @@
 import { Image, StyleSheet, Text, View } from "react-native";
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import ScreenWrapper from "@/components/ScreenWrapper";
 import { StatusBar } from "expo-status-bar";
 import { hp, wp } from "@/helpers/common";
 import { theme } from "@/constants";
-import { Redirect } from "expo-router";
+import { Redirect, router } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { STORAGE_KEY } from "@/utils/constants";
 
 type WelcomeProps = {};
 
 const Welcome: FC<WelcomeProps> = ({}) => {
-  return <Redirect href="/(auth)" />;
+  const checkAccessToken = async () => {
+    const access_token = await AsyncStorage.getItem(STORAGE_KEY.ACCESS_TOKEN);    
+    if (access_token) {
+      router.push("/(tabs)");
+    } else {
+      router.push("/(tabs)");
+    }
+  };
+
+  useEffect(() => {
+    checkAccessToken();
+  }, []);
+
+  // return <Redirect href="/(auth)" />;
   return (
     <ScreenWrapper bg={"white"}>
       <StatusBar style="dark" />

@@ -1,14 +1,52 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import React from "react";
 import ColorList from "../../components/ColorList";
 import { hp, wp } from "@/helpers/common";
 import { theme } from "@/constants";
+import ScreenWrapper from "@/components/ScreenWrapper";
+import Icon from "@/assets/icons/index";
+import { router } from "expo-router";
+import Avatar from "@/components/Avatar";
 
 const Home = () => {
   return (
-    <View>
-      <ColorList color="#0891b2" />
-    </View>
+    <ScreenWrapper>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.title}>Nam Robot</Text>
+          <View style={styles.icons}>
+            <Pressable>
+              <Icon
+                name="heart"
+                size={hp(3.2)}
+                strokeWidth={2}
+                color={theme.colors.text}
+              />
+            </Pressable>
+            <Pressable>
+              <Icon
+                name="plus"
+                size={hp(3.2)}
+                strokeWidth={2}
+                color={theme.colors.text}
+              />
+            </Pressable>
+            <Pressable
+              onPress={() => {
+                router.push("/(tabs)/profile");
+              }}
+            >
+              <Avatar
+                uri={require("../../assets/images/react-logo.png")}
+                size={hp(4.3)}
+                rounded={theme.radius.sm}
+                style={{ borderWidth: 2 }}
+              />
+            </Pressable>
+          </View>
+        </View>
+      </View>
+    </ScreenWrapper>
   );
 };
 

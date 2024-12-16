@@ -12,7 +12,7 @@ type BackButtonProps = {
 const BackButton: FC<BackButtonProps> = ({ size = 26 }) => {
   const router = useRouter();
   return (
-    <Pressable onLongPress={() => router.back()} style={styles.button}>
+    <Pressable onPress={() => router.back()} style={styles.button}>
       <Icon
         name="arrowLeft"
         strokeWidth={2.5}

@@ -1,33 +1,77 @@
-import { View, Text, StyleSheet, Button, Pressable } from "react-native";
-import React from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Button,
+  Pressable,
+  TouchableOpacity,
+} from "react-native";
+import React, { FC } from "react";
 import ColorList from "../../components/ColorList";
 import { theme } from "@/constants";
 import { hp, wp } from "@/helpers/common";
 import ScreenWrapper from "@/components/ScreenWrapper";
 import Icon from "@/assets/icons/index";
+import { useRouter } from "expo-router";
+import Header from "@/components/Header";
+import Avatar from "@/components/Avatar";
 
-const Profile = () => {
-  const handleLogout = () => {};
+interface PropfileProps {}
+
+const Profile: FC<PropfileProps> = () => {
+  const router = useRouter();
 
   return (
     <ScreenWrapper>
+      <UserHeader user={{}} router={router} />
+    </ScreenWrapper>
+  );
+};
+
+interface UserHeaderProps {
+  user?: any;
+  router?: any;
+}
+
+const UserHeader: FC<UserHeaderProps> = ({ user, router }) => {
+  const handleLogout = () => {};
+
+  return (
+    <View style={{ flex: 1, paddingHorizontal: wp(4) }}>
+      <View>
+        <Header title="Thông tin" showBackButton={true} mb={30} />
+        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+          <Icon name="logout" color={theme.colors.rose} />
+        </TouchableOpacity>
+      </View>
+
       <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.title}>LinkUp</Text>
-          <View style={styles.icons}>
-            <Pressable>
-              <Icon
-                name="heart"
-                size={hp(3.2)}
-                strokeWidth={2}
-                color={theme.colors.text}
-              />
+        <View style={{ gap: 15 }}>
+          <View style={styles.avatarContainer}>
+            <Avatar
+              uri={require("../../assets/images/defaultUser.png")}
+              size={hp(12)}
+              rounded={theme.radius.xxl * 1.4}
+            />
+            <Pressable style={styles.editIcon}>
+              <Icon name="edit" size={20} strokeWidth={2.5} />
             </Pressable>
+          </View>
+
+          <View style={{ alignItems: "center", gap: 4 }}>
+            <Text style={styles.userName}>Nam Robot</Text>
+            <Text style={styles.infoText}>Nam Tran</Text>
+          </View>
+
+          <View style={{ gap: 10 }}>
+            <View style={styles.info}>
+              <Icon name="call" size={20} color={theme.colors.textLight} />
+              <Text style={styles.infoText}>0328512960</Text>
+            </View>
           </View>
         </View>
       </View>
-      <Button title="Đăng xuất" onPress={handleLogout}></Button>
-    </ScreenWrapper>
+    </View>
   );
 };
 
@@ -37,55 +81,61 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: 10,
+  headerContainer: {
     marginHorizontal: wp(4),
+    marginBottom: 20,
   },
-  title: {
-    color: theme.colors.text,
-    fontSize: hp(3.2),
-    fontWeight: theme.fonts.bold as any,
-  },
-  avatarImage: {
-    height: hp(4.3),
-    width: hp(4.3),
+  logoutButton: {
+    position: "absolute",
+    right: 0,
+    padding: 5,
     borderRadius: theme.radius.sm,
-    borderCurve: "continuous",
-    borderColor: theme.colors.gray,
-    borderWidth: 3,
-  },
-  icons: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: 18,
+    backgroundColor: "#fee2e2",
   },
   listStyle: {
-    paddingTop: 20,
     paddingHorizontal: wp(4),
+    paddingBottom: 30,
   },
-  noPosts: {
+  noPost: {
     fontSize: hp(2),
     textAlign: "center",
     color: theme.colors.text,
   },
-  pill: {
-    position: "absolute",
-    right: -10,
-    top: -4,
-    height: hp(2.2),
-    width: hp(2.2),
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 20,
-    backgroundColor: theme.colors.roseLight,
+  avatarContainer: {
+    height: hp(12),
+    width: hp(12),
+    alignSelf: "center",
   },
-  pillText: {
-    color: "white",
-    fontSize: hp(1.2),
-    fontWeight: theme.fonts.bold as any,
+  editIcon: {
+    position: "absolute",
+    bottom: 0,
+    right: -12,
+    padding: 7,
+    borderRadius: 50,
+    backgroundColor: "white",
+    shadowColor: theme.colors.textLight,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.4,
+    shadowRadius: 5,
+    elevation: 7,
+  },
+  userName: {
+    fontSize: hp(3),
+    fontWeight: "500",
+    color: theme.colors.textDark,
+  },
+  infoText: {
+    fontSize: hp(1.6),
+    fontWeight: "500",
+    color: theme.colors.textLight,
+  },
+  info: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+  },
+  headerShape: {
+    width: wp(100),
+    height: hp(20),
   },
 });
